@@ -1,0 +1,54 @@
+# iBank Test Mode — Selenide + REST-assured Tests (ДЗ 2.3. Patterns, Задача №2)
+
+Автотесты для интернет-банка: создание пользователя через открытое API тестового режима и проверка формы входа на различные сценарии (happy/sad path + валидация полей).
+
+## Технологии
+
+- Selenide 6.19.1 — UI-тесты
+- REST-assured 5.5.0 — создание пользователей через API
+- Gson 2.10.1 — сериализация Java-объектов в JSON
+- JUnit Jupiter 5.10.2
+- Lombok 1.18.30 — data-классы (`@Value`)
+- Faker 1.0.2 (en locale) — генерация логинов/паролей
+
+## Сценарии
+
+| # | Сценарий | Ожидание |
+|---|---|---|
+| 1 | Активный пользователь, верный логин+пароль | Успешная авторизация, переход на `/dashboard` |
+| 2 | Заблокированный пользователь | Ошибка «Пользователь заблокирован» |
+| 3 | Существующий логин, неверный пароль | Ошибка «Неверно указан логин или пароль» |
+| 4 | Несуществующий логин | Ошибка «Неверно указан логин или пароль» |
+| 5 | Пустой логин | Поле login подсвечено как invalid |
+| 6 | Пустой пароль | Поле password подсвечено как invalid |
+
+## Локальный запуск
+
+1. Запустить SUT в тестовом режиме:
+
+```bash
+java -jar artifacts/app-ibank.jar -P:profile=test
+```
+
+2. В отдельной консоли запустить тесты:
+
+```bash
+./gradlew test -Dselenide.headless=true
+```
+
+С выводом логов REST-assured и Selenide:
+
+```bash
+./gradlew test --info
+```
+
+## Время на тестирование
+
+```
+время, затраченное на ручное тестирование (минут): 30;
+время, затраченное на автоматизацию (минут): 90.
+```
+
+## CI
+
+[![Java CI with Gradle](https://github.com/Gordon-AG/card-delivery-test-mode/actions/workflows/gradle.yml/badge.svg)](https://github.com/Gordon-AG/card-delivery-test-mode/actions/workflows/gradle.yml)
