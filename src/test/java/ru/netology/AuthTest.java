@@ -31,7 +31,7 @@ class AuthTest {
         webdriver().shouldHave(url("http://localhost:9999/dashboard"), Duration.ofSeconds(15));
 
         // 2. И/или проверяем появление текста «Личный кабинет» на экране
-        $("h2").shouldHave(exactText("Личный кабинет"));
+        $("h2").shouldBe(visible, Duration.ofSeconds(15)).shouldHave(exactText("Личный кабинет"));
 
     }
 
