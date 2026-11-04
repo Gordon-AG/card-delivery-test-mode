@@ -10,7 +10,6 @@ compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = 'UTF-8'
 
 repositories {
-    maven { url 'https://repo.yandex.ru/maven/' }
     mavenCentral()
 }
 
@@ -26,5 +25,6 @@ dependencies {
 
 test {
     useJUnitPlatform()
-    systemProperty 'selenide.headless', System.getProperty('selenide.headless')
+    systemProperty 'selenide.headless', 'true' // поставить false для запуска локально, с открытием браузера.
+    systemProperty 'chromeoptions.prefs', System.getProperty('chromeoptions.prefs', "profile.password_manager_leak_detection=false")
 }

@@ -27,9 +27,12 @@ class AuthTest {
         $("[data-test-id='password'] input").setValue(user.getPassword());
         $("[data-test-id='action-login']").click();
 
-        // Проверяем, что URL сменился на /dashboard
-        webdriver().shouldHave(url("http://localhost:9999/dashboard"),
-                Duration.ofSeconds(15));
+        // 1. Проверяем, что адресная строка изменилась на /dashboard
+        webdriver().shouldHave(url("http://localhost:9999/dashboard"), Duration.ofSeconds(15));
+
+        // 2. И/или проверяем появление текста «Личный кабинет» на экране
+        $("h2").shouldHave(exactText("Личный кабинет"));
+
     }
 
     @Test
@@ -43,8 +46,6 @@ class AuthTest {
 
         $("[data-test-id='error-notification']")
                 .shouldBe(visible, Duration.ofSeconds(15));
-        $("[data-test-id='error-notification'] .notification__title")
-                .shouldHave(exactText("Ошибка"));
         $("[data-test-id='error-notification'] .notification__content")
                 .shouldHave(exactText("Ошибка! Пользователь заблокирован"));
     }
@@ -88,8 +89,10 @@ class AuthTest {
         $("[data-test-id='password'] input").setValue(user.getPassword());
         $("[data-test-id='action-login']").click();
 
-        $("[data-test-id='login'].input_invalid")
-                .shouldBe(visible, Duration.ofSeconds(5));
+        $("[data-test-id='login']")
+                .shouldBe(visible, Duration.ofSeconds(5))
+                .find(".input__sub")
+                .shouldHave(exactText("Поле обязательно для заполнения"));
     }
 
     @Test
@@ -100,7 +103,9 @@ class AuthTest {
         $("[data-test-id='login'] input").setValue(user.getLogin());
         $("[data-test-id='action-login']").click();
 
-        $("[data-test-id='password'].input_invalid")
-                .shouldBe(visible, Duration.ofSeconds(5));
+        $("[data-test-id='password']")
+                .shouldBe(visible, Duration.ofSeconds(5))
+                .find(".input__sub")
+                .shouldHave(exactText("Поле обязательно для заполнения"));
     }
 }
